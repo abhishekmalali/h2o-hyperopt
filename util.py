@@ -54,6 +54,7 @@ def qlognormal(name, (mu, sigma, q)):
     return hp.qlognormal(name, mu, sigma, q)
 
 
+# Additional helped functions
 def gen_metric(func, metric):
     if metric == 'auc':
         return func.auc()
@@ -65,6 +66,18 @@ def gen_metric(func, metric):
         return func.r2()
     else:
         raise ValueError("Error metric not available in H2O")
+
+
+def update_model_parameters(model, params):
+    base_attrs = dir(model)
+    for key in params.keys():
+        if key not in base_attrs and key != 'metric':
+            raise ValueError("Wrong parameter %s passed to the model"
+                             % key)
+        else:
+            setattr(model, key, params[key])
+    return model
+
 """
 if __name__ == "__main__":
     print randint('a', 10, 20)
