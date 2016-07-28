@@ -158,3 +158,52 @@ class GBMOptimizer():
                     self._select_dist_function(key, self.model_params[key])
             else:
                 self._hp_model_params[key] = self.model_params[key]
+        return
+
+    def objective_auto(self, params):
+        metric = self._hp_model_params['metric']
+        model = h2o.H2OGradientBoostingEstimator()
+        if 'max_depth' in params.keys() and params['max_depth'] < 2:
+            params['max_depth'] = 2
+        # Setting model parameters in order to begin training
+        base_attrs = dir(model)
+        for key in params.keys():
+            if key not in base_attrs and key != 'metric':
+                raise ValueError("Wrong parameter %s passed to the model"
+                                 % key)
+            else:
+                setattr(model, key, params[key])
+        # Training the model
+        model.train(x=self.predictors,
+                    y=self.response,
+                    training_frame=self.trainFr,
+                    early_stopping_rounds=5)
+        # Checking if the user decided to use cross-validation
+        if 'nfolds' in params.keys():
+            cross_val_data = model.cross_validation_metrics_summary().\
+                            as_data_frame()
+            cross_val_data = cross_val_data.set_index('')
+            cv_val = cross_val_data.loc[metric]['mean']
+            valid_val = gen_metric(model.model_performance(self.validFr),
+                                   metric)
+            score = (cv_val + valid_val)/2
+        else:
+            score = gen_metric(model.model_performance(self.validFr), metric)
+        if metric == 'auc':
+            score = -score
+        print score
+        return {'loss': score, 'status': STATUS_OK, 'model': model}
+
+    # Function to start training and optimize over the surface
+    def start_optimization(self, num_evals=100, trainingFr=None,
+                           validationFr=None, predictors=None,
+                           response=None):
+        self.trials = Trials()
+        self.trainFr = trainingFr
+        self.validFr = validationFr
+        self.response = response
+        self.predictors = predictors
+        print self._hp_model_params
+        best_model = fmin(self.objective_auto, space=self._hp_model_params,
+                          algo=tpe.suggest, max_evals=num_evals,
+                          trials=self.trials)

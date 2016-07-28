@@ -52,6 +52,19 @@ def lognormal(name, (mu, sigma)):
 
 def qlognormal(name, (mu, sigma, q)):
     return hp.qlognormal(name, mu, sigma, q)
+
+
+def gen_metric(func, metric):
+    if metric == 'auc':
+        return func.auc()
+    elif metric == 'logloss':
+        return func.logloss()
+    elif metric == 'mse':
+        return func.mse()
+    elif metric == 'r2':
+        return func.r2()
+    else:
+        raise ValueError("Error metric not available in H2O")
 """
 if __name__ == "__main__":
     print randint('a', 10, 20)
