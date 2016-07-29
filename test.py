@@ -1,5 +1,6 @@
 from gbmoptimizer import *
 from dleoptimizer import *
+from modeldocker import *
 import h2o
 h2o.init()
 
@@ -25,6 +26,27 @@ def data_gen():
     return trainFr, testFr, validFr
 
 
+def test_docker():
+    trainFr, testFr, validFr = data_gen()
+    predictors = trainFr.names[:]
+    # Removing the response column from the list of predictors
+    predictors.remove('survived')
+    response = 'survived'
+
+    newdle = DLEOptimizer(metric='auc')
+    newdle.select_optimization_parameters("Default")
+    newgbm = GBMOptimizer(metric='auc')
+    newgbm.select_optimization_parameters("Default")
+    newdock = ModelDocker([newgbm, newdle], 'auc')
+
+    newdock.start_optimization(num_evals=100, trainingFr=trainFr,
+                               validationFr=validFr, response=response,
+                               predictors=predictors)
+    print newdock.best_model_parameters()
+    print newdock.best_model_test_scores(testFr)
+    print newdock.best_model_scores(return_value=True)
+
+
 def test_dle():
     newdle = DLEOptimizer(metric='auc')
     newdle.select_optimization_parameters("Default")
@@ -38,6 +60,7 @@ def test_dle():
                               predictors=predictors)
     print newdle.best_model_scores(return_value=True)
     print newdle.best_model_test_scores(testFr)
+    print newdle.best_model_parameters()
 
 
 def test_gbm():
@@ -63,4 +86,4 @@ def test_gbm():
     print newgbm.best_model_test_scores(testFr)
 
 if __name__ == '__main__':
-    test_dle()
+    test_docker()
