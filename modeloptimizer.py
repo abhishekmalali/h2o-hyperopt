@@ -228,3 +228,9 @@ class ModelOptimizer():
             return self.trials.best_trial['result']['params']
         else:
             raise ValueError, 'Model not yet optimized'
+
+    def save_best_model(self, path=None):
+        if self.best_model is not None:
+            h2o.save_model(self.best_model, path)
+        else:
+            raise ValueError, 'Model not yet optimized'
