@@ -34,4 +34,5 @@ class DLEOptimizer(ModelOptimizer):
                     training_frame=self.trainFr,
                     early_stopping_rounds=10)
         score = self._gen_score(params, model, metric)
-        return {'loss': score, 'status': STATUS_OK, 'model': model}
+        return {'loss': score, 'status': STATUS_OK, 'model': model,
+                'params': params}

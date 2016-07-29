@@ -221,3 +221,10 @@ class ModelOptimizer():
         if metric == 'auc':
             score = -score
         return score
+
+    def best_model_parameters(self):
+        # Return parameter of the best model discovered
+        if self.best_model is not None:
+            return self.trials.best_trial['result']['params']
+        else:
+            raise ValueError, 'Model not yet optimized'

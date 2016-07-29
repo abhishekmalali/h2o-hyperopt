@@ -39,4 +39,5 @@ class GBMOptimizer(ModelOptimizer):
                     training_frame=self.trainFr,
                     early_stopping_rounds=5)
         score = self._gen_score(params, model, metric)
-        return {'loss': score, 'status': STATUS_OK, 'model': model}
+        return {'loss': score, 'status': STATUS_OK, 'model': model,
+                'params': params}
