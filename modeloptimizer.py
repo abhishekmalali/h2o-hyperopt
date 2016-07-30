@@ -12,6 +12,7 @@ class ModelOptimizer():
         self.def_params = {}
         self.model_params = None
         self.model = None
+        self.ensemble_model = None
 
     def check_if_metric_set(self):
         """
@@ -161,6 +162,7 @@ class ModelOptimizer():
         self.validFr = validationFr
         self.response = response
         self.predictors = predictors
+        self.num_evals = num_evals
         best_model = fmin(self.objective_auto, space=self._hp_model_params,
                           algo=tpe.suggest, max_evals=num_evals,
                           trials=self.trials)
@@ -234,3 +236,46 @@ class ModelOptimizer():
             h2o.save_model(self.best_model, path)
         else:
             raise ValueError, 'Model not yet optimized'
+
+    def create_ensembler_data(self, modelList, data, train=True):
+        newFrame = None
+        print type(modelList), len(modelList)
+        for model in modelList:
+            if newFrame is None:
+                newFrame = model.predict(data)['predict']
+            else:
+                newFrame = newFrame.cbind(model.predict(data)['predict'])
+        if train is True:
+            newFrame = newFrame.cbind(data[self.response])
+        return newFrame
+
+    def best_model_ensemble(self, num_models=3):
+        scores = []
+        for i in range(len(self.trials.trials)):
+            scores.append(self.trials.trials[i]['result']['loss'])
+        index = sorted(range(len(scores)), key=lambda k: scores[k])
+        modelList = []
+        for j in range(num_models):
+            modelList.append(self.trials.trials[index[j]]['result']['model'])
+        self.create_ensembler_model(modelList)
+
+    def create_ensembler_model(self, modelList):
+        self.ensemble_model_list = modelList
+        ensembleTrainFr = self.create_ensembler_data(modelList,
+                                                     self.trainFr)
+        self.ensemble_model = h2o.H2OGradientBoostingEstimator(ntrees=200,
+                                                               max_depth=5,
+                                                               nfolds=5)
+        ensemble_predictors = ensembleTrainFr.columns
+        print ensembleTrainFr.columns
+        ensemble_predictors.remove(self.response)
+        self.ensemble_model.train(x=ensemble_predictors,
+                                  y=self.response,
+                                  training_frame=ensembleTrainFr)
+
+        print "Model Trained"
+
+
+    def predict_ensemble(self, data):
+        dataEn = self.create_ensembler_data(self.ensemble_model_list, data, train=False)
+        return self.ensemble_model.predict(dataEn)

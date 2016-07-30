@@ -7,7 +7,7 @@ h2o.init()
 
 def data_gen():
     # 'path' can point to a local file, hdfs, s3, nfs, Hive, directories, etc.
-    titanic_df = h2o.import_file(path="https://s3.amazonaws.com/h2o-public-test-data/smalldata/gbm_test/titanic.csv")
+    titanic_df = h2o.import_file(path="/Users/abhishek/Downloads/titanic.csv")
 
     # Basic preprocessing
     # columns_to_be_used - List of columns which are used in the training/test
@@ -45,6 +45,9 @@ def test_docker():
     print newdock.best_model_parameters()
     print newdock.best_model_test_scores(testFr)
     print newdock.best_model_scores(return_value=True)
+    newdock.best_model_ensemble(num_models=5)
+    print newdock.ensemble_model
+    #print newdock.save_best_model(path="../")
 
 
 def test_dle():
