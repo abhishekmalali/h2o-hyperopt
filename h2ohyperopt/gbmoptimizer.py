@@ -1,4 +1,3 @@
-import util
 from util import *
 from modeloptimizer import *
 

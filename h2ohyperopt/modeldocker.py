@@ -1,9 +1,7 @@
-from hyperopt import fmin, tpe, hp, STATUS_OK, Trials
-import hyperopt
-import util
 from util import *
 from dleoptimizer import *
 from gbmoptimizer import *
+from modeloptimizer import *
 
 
 class ModelDocker(ModelOptimizer):
