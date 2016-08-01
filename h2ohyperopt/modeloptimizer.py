@@ -1,6 +1,5 @@
 from hyperopt import fmin, tpe, hp, STATUS_OK, Trials
 import hyperopt
-import h2o
 import util
 from util import *
 
@@ -9,7 +8,7 @@ class ModelOptimizer():
 
     def __init__(self, metric=None):
 
-        self.def_params = {}
+        self.def_params = {'metric': metric}
         self.model_params = None
         self.model = None
         self.ensemble_model = None
@@ -18,9 +17,9 @@ class ModelOptimizer():
         """
         Function used to check whether the user has defined the error metric
         """
-        assert self.def_params['metric'] != None,\
-        'GBM requires the model to have a metric. Use function set_metric()'
-        print "Metric defined"
+        # assert self.def_params['metric'] != None,\
+        # 'GBM requires the model to have a metric. Use function set_metric()'
+        return self.def_params['metric'] != None
 
     def set_metric(self, metric):
         """

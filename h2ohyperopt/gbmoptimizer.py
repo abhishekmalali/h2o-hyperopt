@@ -1,6 +1,3 @@
-from hyperopt import fmin, tpe, hp, STATUS_OK, Trials
-import hyperopt
-import h2o
 import util
 from util import *
 from modeloptimizer import *
