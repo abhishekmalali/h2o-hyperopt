@@ -1,0 +1,4 @@
+pymongo
+hyperopt
+h2o
+coveralls
