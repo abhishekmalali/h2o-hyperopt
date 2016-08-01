@@ -33,45 +33,53 @@ class ModelOptimizer():
         """
         Function to display all the parameters which can be optimized for GBM
         """
-        print self.model._parms.keys()
+        return self.model._parms.keys()
 
-    def default_parameters_opt(self):
+    def default_parameters_opt(self, return_dict=False):
         """
         Function to display the ranges of the default parameters over which
         optimization will take place.
         """
-        for key in self.def_params.keys():
-            if type(self.def_params[key]) == tuple:
-                key_val = self.def_params[key]
-                if key_val[0] == 'choice':
-                    print key + ' : ' + key_val[0] + ' amongst the values  '\
-                        + str(key_val[1])
+        if return_dict is False:
+            for key in self.def_params.keys():
+                if type(self.def_params[key]) == tuple:
+                    key_val = self.def_params[key]
+                    if key_val[0] == 'choice':
+                        print key + ' : ' + key_val[0] + \
+                            ' amongst the values  ' + str(key_val[1])
+                    else:
+                        print key + ' : ' + key_val[0] + \
+                            ' distribution in range ' + str(key_val[1])
                 else:
-                    print key + ' : ' + key_val[0] + ' distribution in range '\
-                        + str(key_val[1])
-            else:
-                print "Static Parameter " + key + " : " + \
-                        str(self.def_params[key])
-        return
+                    print "Static Parameter " + key + " : " + \
+                            str(self.def_params[key])
+            return
+        else:
+            return self.def_params
 
-    def model_parameters_opt(self):
+    def model_parameters_opt(self, return_dict=False):
         """
         Function to display the ranges of the model parameters over which
         optimization will take place.
         """
-        for key in self.model_params.keys():
-            if type(self.model_params[key]) == tuple:
-                key_val = self.model_params[key]
-                if key_val[0] == 'choice':
-                    print key + ' : ' + key_val[0] + ' amongst the values  '\
-                        + str(key_val[1])
+        if return_dict is False:
+            for key in self.model_params.keys():
+                if type(self.model_params[key]) == tuple:
+                    key_val = self.model_params[key]
+                    if key_val[0] == 'choice':
+                        print key + ' : ' + key_val[0] + \
+                            ' amongst the values  '\
+                            + str(key_val[1])
+                    else:
+                        print key + ' : ' + key_val[0] + \
+                            ' distribution in range '\
+                            + str(key_val[1])
                 else:
-                    print key + ' : ' + key_val[0] + ' distribution in range '\
-                        + str(key_val[1])
-            else:
-                print "Static Parameter " + key + " : " + \
-                        str(self.model_params[key])
-        return
+                    print "Static Parameter " + key + " : " + \
+                            str(self.model_params[key])
+            return
+        else:
+            return self.model_params
 
     def select_optimization_parameters(self, params, use_default=True):
         """
