@@ -1,5 +1,5 @@
 from util import *
-
+import util
 
 class ModelOptimizer():
 
