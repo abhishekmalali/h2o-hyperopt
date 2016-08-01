@@ -1,4 +1,4 @@
-pymongo
+pymongo==2.7.2
 hyperopt
 h2o
 coveralls
