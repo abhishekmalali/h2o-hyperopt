@@ -24,6 +24,7 @@ class TestModelOptParameters(TestCase):
     def testAddRemOptParameters(self):
         model = h2ohyperopt.ModelOptimizer(metric='auc')
         model.select_optimization_parameters(params="Default")
+        # Adding parameters with search spaces
         model.add_optimization_parameters({'col_sample_rate':
                                            ('uniform', (0.5, 0.8)),
                                            'ntrees': ('choice', [10, 20, 30])})
