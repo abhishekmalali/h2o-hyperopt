@@ -22,6 +22,27 @@ class ModelDocker(ModelOptimizer):
 
         self.hp_docker_params = hp.choice('classifier', docker_params)
 
+    def _gen_score(self, params, model, metric):
+        # Checking if the user decided to use cross-validation
+        if 'nfolds' in params.keys():
+            """
+            # Need to check on cross_validation_metrics_summary() function
+
+            cross_val_data = model.cross_validation_metrics_summary().\
+                            as_data_frame()
+            cross_val_data = cross_val_data.set_index('')
+            cv_val = float(cross_val_data.loc[metric]['mean'])
+            valid_val = gen_metric(model.model_performance(self.validFr),
+                                   metric)
+            score = (cv_val + valid_val)/2
+            """
+            score = gen_metric(model.model_performance(self.validFr), metric)
+        else:
+            score = gen_metric(model.model_performance(self.validFr), metric)
+        if metric == 'auc':
+            score = -score
+        return score
+
     def objective_auto(self, params):
         model = params['model']
         model_params = params['params']

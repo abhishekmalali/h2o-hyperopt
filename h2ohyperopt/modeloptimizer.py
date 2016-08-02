@@ -1,5 +1,6 @@
 from util import *
 import util
+from h2o.h2o import H2OGradientBoostingEstimator
 
 class ModelOptimizer():
 
@@ -243,7 +244,6 @@ class ModelOptimizer():
 
     def create_ensembler_data(self, modelList, data, train=True):
         newFrame = None
-        print type(modelList), len(modelList)
         for model in modelList:
             if newFrame is None:
                 newFrame = model.predict(data)['predict']
@@ -267,7 +267,7 @@ class ModelOptimizer():
         self.ensemble_model_list = modelList
         ensembleTrainFr = self.create_ensembler_data(modelList,
                                                      self.trainFr)
-        self.ensemble_model = h2o.H2OGradientBoostingEstimator(ntrees=200,
+        self.ensemble_model = H2OGradientBoostingEstimator(ntrees=200,
                                                                max_depth=5,
                                                                nfolds=5)
         ensemble_predictors = ensembleTrainFr.columns
