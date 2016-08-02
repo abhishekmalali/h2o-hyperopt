@@ -2,6 +2,7 @@ from .modeldocker import ModelDocker
 from .gbmoptimizer import GBMOptimizer
 from .dleoptimizer import DLEOptimizer
 from .modeloptimizer import ModelOptimizer
+from .glmoptimizer import GLMOptimizer
 from .util import *
 
 # Necessary imports
