@@ -106,3 +106,20 @@ class ModelDocker(ModelOptimizer):
             else:
                 return {"Training Score": trainScore,
                         "Validation Score": valScore}
+
+    def best_in_class_ensembles(self):
+        scores = []
+        model_type = []
+        for i in range(len(self.trials.trials)):
+            scores.append(self.trials.trials[i]['result']['loss'])
+            model_type.append(type(self.trials.trials[i]['result']['model']))
+        index = sorted(range(len(scores)), key=lambda k: scores[k])
+        modelTypeMasterList = set(model_type)
+        modelList = []
+        idx = 0
+        for modType in modelTypeMasterList:
+            while model_type[index[idx]] != modType:
+                idx += 1
+            modelList.append(self.trials.trials[index[idx]]['result']['model'])
+            idx = 0
+        self.create_ensembler_model(modelList)

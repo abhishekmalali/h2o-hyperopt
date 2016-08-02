@@ -23,4 +23,5 @@ class TestModelDockerOpt(TestCase):
                                    predictors=predictors)
         newdock.best_model_parameters()
         newdock.best_model_scores()
+        newdock.best_in_class_ensembles()
         assert newdock.best_model_test_scores(testFr) > 0.5
