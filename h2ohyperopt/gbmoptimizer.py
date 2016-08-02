@@ -1,6 +1,6 @@
 from util import *
 from modeloptimizer import *
-from h2o import H2OGradientBoostingEstimator
+from h2o.h2o import H2OGradientBoostingEstimator
 
 class GBMOptimizer(ModelOptimizer):
 
