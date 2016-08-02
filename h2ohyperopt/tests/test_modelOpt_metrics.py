@@ -1,6 +1,8 @@
 from unittest import TestCase
 import h2ohyperopt
 
+# Checking only error metric related functions
+
 class TestModelOptMetrics(TestCase):
     def testCheckMetricSet(self):
         model = h2ohyperopt.ModelOptimizer(metric='auc')
