@@ -1,6 +1,6 @@
 from util import *
 from modeloptimizer import *
-
+from h2o import H2OGradientBoostingEstimator
 
 class GBMOptimizer(ModelOptimizer):
 
@@ -17,14 +17,14 @@ class GBMOptimizer(ModelOptimizer):
                            'nfolds': 5,
                            'metric': metric}
         self.model_params = None
-        self.model = h2o.H2OGradientBoostingEstimator()
+        self.model = H2OGradientBoostingEstimator()
         self._hp_model_params = None
         self.trials = None
         self.best_model = None
 
     def objective_auto(self, params):
         metric = self._hp_model_params['metric']
-        model = h2o.H2OGradientBoostingEstimator()
+        model = H2OGradientBoostingEstimator()
         if 'max_depth' in params.keys() and params['max_depth'] < 2:
             params['max_depth'] = 2
         # Setting model parameters in order to begin training
