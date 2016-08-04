@@ -2,9 +2,17 @@ from util import *
 from modeloptimizer import *
 from h2o.h2o import H2ODeepLearningEstimator
 
+
 class DLEOptimizer(ModelOptimizer):
 
     def __init__(self, metric=None):
+        """
+        Initializing DLEOptimizer class.
+
+        Input
+        ---------------------
+        metric: Metric used by H2O to evaluate models.
+        """
         # Initialize the DLEOptimizer
         # Setting the default search parameters
         self.optimized = False
@@ -21,19 +29,10 @@ class DLEOptimizer(ModelOptimizer):
         self.best_model = None
 
     def _gen_score(self, params, model, metric):
+        """ Custom scoring function for the DLEOptimizer. """
         # Checking if the user decided to use cross-validation
         if 'nfolds' in params.keys():
-            """
-            # Need to check on cross_validation_metrics_summary() function
-
-            cross_val_data = model.cross_validation_metrics_summary().\
-                            as_data_frame()
-            cross_val_data = cross_val_data.set_index('')
-            cv_val = float(cross_val_data.loc[metric]['mean'])
-            valid_val = gen_metric(model.model_performance(self.validFr),
-                                   metric)
-            score = (cv_val + valid_val)/2
-            """
+            # TODO: Check on compatibility of cross_validation_metrics_summary() with new versions of H2O
             score = gen_metric(model.model_performance(self.validFr), metric)
         else:
             score = gen_metric(model.model_performance(self.validFr), metric)
@@ -42,6 +41,7 @@ class DLEOptimizer(ModelOptimizer):
         return score
 
     def objective_auto(self, params):
+        """ Internal objective function for the DLEOptimizer class. """
         metric = self._hp_model_params['metric']
         model = H2ODeepLearningEstimator()
         # Setting model parameters in order to begin training

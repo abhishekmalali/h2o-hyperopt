@@ -5,6 +5,13 @@ from h2o.h2o import H2OGradientBoostingEstimator
 class GBMOptimizer(ModelOptimizer):
 
     def __init__(self, metric=None):
+        """
+        Initializing GBMOptimizer class.
+
+        Input
+        ---------------------
+        metric: Metric used by H2O to evaluate models.
+        """
         # Initializing the GBMOptimizer
         # Setting the default search parameters
         self.optimized = False
@@ -23,6 +30,7 @@ class GBMOptimizer(ModelOptimizer):
         self.best_model = None
 
     def objective_auto(self, params):
+        """ Internal objective function for the GBMOptimizer class. """
         metric = self._hp_model_params['metric']
         model = H2OGradientBoostingEstimator()
         if 'max_depth' in params.keys() and params['max_depth'] < 2:
