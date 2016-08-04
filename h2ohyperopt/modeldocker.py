@@ -6,6 +6,14 @@ from modeloptimizer import *
 
 class ModelDocker(ModelOptimizer):
     def __init__(self, modelList, metric):
+        """
+        Initializing the ModelDocker class.
+
+        Input
+        -------------------
+        modelList: List of ModelOptimizers
+        metric: Evalution metric to be used by H2O
+        """
         self.modelList = modelList
         self.optimized = False
         self._create_hyperopt_format()
@@ -13,6 +21,7 @@ class ModelDocker(ModelOptimizer):
         self.metric = metric
 
     def _create_hyperopt_format(self):
+        """ Internal function to convert dictionaries to hyperopt format. """
         docker_params = []
         for model in self.modelList:
             model_params = {}
@@ -23,19 +32,10 @@ class ModelDocker(ModelOptimizer):
         self.hp_docker_params = hp.choice('classifier', docker_params)
 
     def _gen_score(self, params, model, metric):
+        """ Custom scoring function for the ModelDocker. """
         # Checking if the user decided to use cross-validation
         if 'nfolds' in params.keys():
-            """
-            # Need to check on cross_validation_metrics_summary() function
-
-            cross_val_data = model.cross_validation_metrics_summary().\
-                            as_data_frame()
-            cross_val_data = cross_val_data.set_index('')
-            cv_val = float(cross_val_data.loc[metric]['mean'])
-            valid_val = gen_metric(model.model_performance(self.validFr),
-                                   metric)
-            score = (cv_val + valid_val)/2
-            """
+            # TODO: Check on compatibility of cross_validation_metrics_summary() with new versions of H2O
             score = gen_metric(model.model_performance(self.validFr), metric)
         else:
             score = gen_metric(model.model_performance(self.validFr), metric)
@@ -44,6 +44,7 @@ class ModelDocker(ModelOptimizer):
         return score
 
     def objective_auto(self, params):
+        """ Internal objective function for the ModelDocker class. """
         model = params['model']
         model_params = params['params']
         model = update_model_parameters(model, model_params)
@@ -58,6 +59,17 @@ class ModelDocker(ModelOptimizer):
     def start_optimization(self, num_evals=100, trainingFr=None,
                            validationFr=None, predictors=None,
                            response=None):
+        """
+        Function to start training models and optimize over the search space.
+
+        Input
+        ---------------------
+        num_evals: Number of objective function evaluations.
+        trainingFr: H2OFrame with trainig data.
+        validationFr: H2OFrame with valdiation data.
+        predictors: List of column names to be designated predictor columns.
+        response: String indicating the response variable in the trainingFr.
+        """
         self.trials = Trials()
         self.trainFr = trainingFr
         self.validFr = validationFr
@@ -70,6 +82,13 @@ class ModelDocker(ModelOptimizer):
         self.optimized = True
 
     def best_model_parameters(self):
+        """
+        Function to return parameters of best model
+
+        Output
+        -----------------
+        Tuple of Best model type and dictionary of parameters of the model.
+        """
         if self.best_model is not None:
             return (self.trials.best_trial['result']['params']['model'].__class__.__name__,
                     self.trials.best_trial['result']['params']['params'])
@@ -78,6 +97,7 @@ class ModelDocker(ModelOptimizer):
 
 
     def best_model_test_scores(self, testFr):
+        """Function to generate scores on test data """
         testScore = gen_metric(self.best_model.
                                model_performance(testFr),
                                self.metric)
@@ -108,6 +128,10 @@ class ModelDocker(ModelOptimizer):
                         "Validation Score": valScore}
 
     def best_in_class_ensembles(self):
+        """
+        Function to pick best model from each ModelOptimizer class and
+        ensemble these models.
+        """
         scores = []
         model_type = []
         for i in range(len(self.trials.trials)):
