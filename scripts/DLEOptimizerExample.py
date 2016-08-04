@@ -1,4 +1,4 @@
-# Example script for using the GBMOptimizer in h2ohyperopt
+# Example script for using the DLEOptimizer in h2ohyperopt
 
 import h2o
 import sys
@@ -22,7 +22,7 @@ def data():
     predictors: List of predictor columns for the Training frame.
     response: String defining the response column for Training frame.
     """
-    titanic_df = h2o.import_file(path="https://s3.amazonaws.com/h2o-public-test-data/smalldata/gbm_test/titanic.csv")
+    titanic_df = h2o.import_file(path="/Users/abhishek/Downloads/titanic.csv")
 
     # Basic preprocessing
     # columns_to_be_used - List of columns which are used in the training/test
@@ -47,15 +47,15 @@ def data():
 
 def model():
     # Initializing the model
-    gbmModel = h2ohyperopt.GBMOptimizer(metric='auc')
+    dleModel = h2ohyperopt.DLEOptimizer(metric='auc')
     # Selecting parameters to optimize on
-    gbmModel.select_optimization_parameters({'col_sample_rate': 'Default',
-                                             'ntrees': 200,
-                                             'learn_rate': ('uniform',(0.05, 0.2)),
+    dleModel.select_optimization_parameters({'epsilon': 'Default',
+                                             'adaptive_rate': True,
+                                             'hidden': ('choice', [[10, 20], [30, 40]]),
                                              'nfolds': 7})
     # Setting a certain parameter to default ensures the parameter is searched
-    # on default search space.
-    # As with learn_rate we can decide the distribution as well as the
+    # on default search space. Ex - 'epsilon'.
+    # As with 'hidden' parameter we can decide the distribution as well as the
     # parameters.
     # Static parameters like nfolds etc. can also be user defined.
 
@@ -63,15 +63,15 @@ def model():
     trainFr, testFr, validFr, predictors, response = data()
 
     # Starting the optimization of hyperparameters
-    gbmModel.start_optimization(num_evals=10, trainingFr=trainFr,
+    dleModel.start_optimization(num_evals=10, trainingFr=trainFr,
                                 validationFr=validFr, response=response,
                                 predictors=predictors)
     print "Best Model Scores"
-    print gbmModel.best_model_scores()
-    print "Test frame score: ", gbmModel.best_model_test_scores(testFr)
+    print dleModel.best_model_scores()
+    print "Test frame score: ", dleModel.best_model_test_scores(testFr)
     print "Best Model Parameters"
     print "------------------------"
-    print gbmModel.best_model_parameters()
+    print dleModel.best_model_parameters()
 
 if __name__ == '__main__':
 

@@ -75,10 +75,8 @@ def update_model_parameters(model, params):
             raise ValueError("Wrong parameter %s passed to the model"
                              % key)
         else:
-            setattr(model, key, params[key])
+            if type(params[key]) is tuple:
+                setattr(model, key, list(params[key]))
+            else:
+                setattr(model, key, params[key])
     return model
-
-"""
-if __name__ == "__main__":
-    print randint('a', 10, 20)
-"""
