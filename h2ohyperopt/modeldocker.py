@@ -127,7 +127,7 @@ class ModelDocker(ModelOptimizer):
                 return {"Training Score": trainScore,
                         "Validation Score": valScore}
 
-    def best_in_class_ensembles(self):
+    def best_in_class_ensembles(self, numModels=1):
         """
         Function to pick best model from each ModelOptimizer class and
         ensemble these models.
@@ -141,9 +141,20 @@ class ModelDocker(ModelOptimizer):
         modelTypeMasterList = set(model_type)
         modelList = []
         idx = 0
+        modCount = 0
         for modType in modelTypeMasterList:
-            while model_type[index[idx]] != modType:
-                idx += 1
-            modelList.append(self.trials.trials[index[idx]]['result']['model'])
+            while modCount < numModels:
+                while model_type[index[idx]] != modType and modCount < numModels:
+                    idx += 1
+                modelList.append(self.trials.trials[index[idx]]['result']['model'])
+                modCount +=1
+            modCount = 0
             idx = 0
         self.create_ensembler_model(modelList)
+
+    def score_ensemble(self, data):
+        dataEn = self.create_ensembler_data(self.ensemble_model_list, data, train=True)
+        testScore = gen_metric(self.ensemble_model.
+                               model_performance(dataEn),
+                               self.metric)
+        return testScore

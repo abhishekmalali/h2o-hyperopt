@@ -313,7 +313,6 @@ class ModelOptimizer():
                                                            max_depth=5,
                                                            nfolds=5)
         ensemble_predictors = ensembleTrainFr.columns
-        print ensembleTrainFr.columns
         ensemble_predictors.remove(self.response)
         self.ensemble_model.train(x=ensemble_predictors,
                                   y=self.response,
@@ -321,7 +320,7 @@ class ModelOptimizer():
 
         print "Model Trained"
 
-    def predict_ensemble(self, data):
+    def predict_ensemble(self, data, score=False):
         """
         Function to predict from the ensemble model.
 
@@ -329,5 +328,13 @@ class ModelOptimizer():
         ---------------------
         data: H2OFrame with the test data.
         """
-        dataEn = self.create_ensembler_data(self.ensemble_model_list, data, train=False)
+        dataEn = self.create_ensembler_data(self.ensemble_model_list, data, train=score)
         return self.ensemble_model.predict(dataEn)
+
+    def score_ensemble(self, data):
+        dataEn = self.create_ensembler_data(self.ensemble_model_list, data, train=True)
+        print dataEn
+        testScore = gen_metric(self.ensemble_model.
+                               model_performance(dataEn),
+                               self.model_params['metric'])
+        return testScore
