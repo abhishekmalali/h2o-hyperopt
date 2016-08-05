@@ -22,7 +22,7 @@ def data():
     predictors: List of predictor columns for the Training frame.
     response: String defining the response column for Training frame.
     """
-    titanic_df = h2o.import_file(path="/Users/abhishek/Downloads/titanic.csv")
+    titanic_df = h2o.import_file(path="https://s3.amazonaws.com/h2o-public-test-data/smalldata/gbm_test/titanic.csv")
 
     # Basic preprocessing
     # columns_to_be_used - List of columns which are used in the training/test
