@@ -12,6 +12,12 @@ optimize over.
 ```{python}
 pip install h2ohyperopt
 ```
+To install the package via github,
+```{bash}
+git clone https://github.com/abhishekmalali/h2o-hyperopt.git
+cd h2o-hyperopt
+python setup.py install
+```
 
 ## Quick Start
 ### For a single model type
@@ -53,11 +59,15 @@ model_gbm.select_optimization_parameters({'col_sample_rate': 'Default',
 model_dle = h2ohyperopt.DLEOptimizer(metric='auc')
 # Selecting parameters to optimize on
 model_dle.select_optimization_parameters({'epsilon': 'Default',
-                                        'adaptive_rate': True,                                           'hidden': ('choice', [[10, 20], [30, 40]]),
+                                        'adaptive_rate': True,
+                                        'hidden': ('choice', [[10, 20], [30, 40]]),
                                         'nfolds':7})
 
-docker = h2ohyperopt.ModelDocker([dleModel, gbmModel], 'auc')                                        docker.start_optimization(num_evals=10, trainingFr=trainFr,
-                          validationFr=validFr, response=response,                                              predictors=predictors)
+docker = h2ohyperopt.ModelDocker([model_dle, model_gbm], 'auc')
+
+docker.start_optimization(num_evals=10, trainingFr=trainFr,
+                          validationFr=validFr, response=response,
+                          predictors=predictors)
 ```
 A model docker can build ensembles from the best of a Deep learning estimator and
 a Gradient boosting estimator.
