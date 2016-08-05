@@ -18,6 +18,8 @@ class GLMOptimizer(ModelOptimizer):
         # Setting the default search parameters
         self.optimized = False
         self.def_params = {'lambda_search': ('choice', [True, False]),
+                           'alpha': ('uniform', (0, 1)),
+                           'nlambdas': ('randint', (5, 20)),
                            'nfolds': 5,
                            'metric': metric}
         self.model_params = None
@@ -55,7 +57,7 @@ class GLMOptimizer(ModelOptimizer):
         metric = self._hp_model_params['metric']
         model = H2OGeneralizedLinearEstimator(family=self.family)
         # Setting model parameters in order to begin training
-        model = update_model_parameters(model, params)
+        model = update_model_parameters_GLM(model, params)
         # Training the model
         model.train(x=self.predictors,
                     y=self.response,

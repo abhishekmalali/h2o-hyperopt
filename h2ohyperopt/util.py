@@ -160,6 +160,7 @@ def gen_metric(func, metric):
 
 
 def update_model_parameters(model, params):
+    """Function to update parameters specially for Model Optimizers"""
     base_attrs = dir(model)
     for key in params.keys():
         if key not in base_attrs and key != 'metric':
@@ -168,6 +169,23 @@ def update_model_parameters(model, params):
         else:
             if type(params[key]) is tuple:
                 setattr(model, key, list(params[key]))
+            else:
+                setattr(model, key, params[key])
+    return model
+
+
+def update_model_parameters_GLM(model, params):
+    """Function to update parameters specially for GLMOptimizers"""
+    base_attrs = dir(model)
+    for key in params.keys():
+        if key not in base_attrs and key != 'metric':
+            raise ValueError("Wrong parameter %s passed to the model"
+                             % key)
+        else:
+            if type(params[key]) is tuple:
+                setattr(model, key, list(params[key]))
+            elif key in ['alpha', 'lambda_']:
+                setattr(model, key, [params[key]])
             else:
                 setattr(model, key, params[key])
     return model
