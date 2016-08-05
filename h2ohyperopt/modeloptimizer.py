@@ -271,10 +271,18 @@ class ModelOptimizer():
         """
         newFrame = None
         for model in modelList:
+            predFrame = model.predict(data)
+            predFrameCols = predFrame.columns
             if newFrame is None:
-                newFrame = model.predict(data)['predict']
+                if len(predFrameCols) > 1:
+                    newFrame = predFrame[predFrameCols[1:]]
+                else:
+                    newFrame = predFrame
             else:
-                newFrame = newFrame.cbind(model.predict(data)['predict'])
+                if len(predFrameCols) > 1:
+                    newFrame = newFrame.cbind(predFrame[predFrameCols[1:]])
+                else:
+                    newFrame = newFrame.cbind(predFrame)
         if train is True:
             newFrame = newFrame.cbind(data[self.response])
         return newFrame
