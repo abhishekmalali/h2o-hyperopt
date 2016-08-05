@@ -72,7 +72,9 @@ def model():
     print "Best Model Parameters"
     print "------------------------"
     print gbmModel.best_model_parameters()
-
+    # For ensembling the models
+    gbmModel.best_model_ensemble()
+    print gbmModel.score_ensemble(testFr)
 if __name__ == '__main__':
 
     model()

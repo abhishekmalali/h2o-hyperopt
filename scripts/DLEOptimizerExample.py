@@ -72,6 +72,9 @@ def model():
     print "Best Model Parameters"
     print "------------------------"
     print dleModel.best_model_parameters()
+    # For Ensembling the models
+    dleModel.best_model_ensemble()
+    print dleModel.score_ensemble(testFr)
 
 if __name__ == '__main__':
 
