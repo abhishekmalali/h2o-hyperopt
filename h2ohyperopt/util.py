@@ -184,7 +184,7 @@ def update_model_parameters_GLM(model, params):
         else:
             if type(params[key]) is tuple:
                 setattr(model, key, list(params[key]))
-            elif key in ['alpha', 'lambda_']:
+            elif key in ['alpha', 'lambda']:
                 setattr(model, key, [params[key]])
             else:
                 setattr(model, key, params[key])

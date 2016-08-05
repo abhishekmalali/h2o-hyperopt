@@ -7,7 +7,7 @@ h2o.init()
 
 class TestGLMOpt(TestCase):
     def testGLM(self):
-        model = h2ohyperopt.GLMOptimizer(metric='auc')
+        model = h2ohyperopt.GLMOptimizer(metric='auc', problemType='Classification')
         model.select_optimization_parameters("Default")
         trainFr, testFr, validFr, predictors, response = data_gen()
         model.start_optimization(num_evals=10, trainingFr=trainFr,

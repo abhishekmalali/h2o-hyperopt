@@ -19,7 +19,7 @@ class GLMOptimizer(ModelOptimizer):
         self.optimized = False
         self.def_params = {'lambda_search': ('choice', [True, False]),
                            'alpha': ('uniform', (0, 1)),
-                           'nlambdas': ('randint', (5, 20)),
+                           'nlambdas': ('randint', (5, 30)),
                            'nfolds': 5,
                            'metric': metric}
         self.model_params = None
@@ -27,7 +27,7 @@ class GLMOptimizer(ModelOptimizer):
         self._hp_model_params = None
         self.trials = None
         self.best_model = None
-        self.family = self._problemType(problemType)
+        self.problemType = problemType
 
     def _problemType(self, prString):
         """Internal function to determine the family type argument for GLM's"""
@@ -55,7 +55,8 @@ class GLMOptimizer(ModelOptimizer):
     def objective_auto(self, params):
         """ Internal objective function for the GLMOptimizer class. """
         metric = self._hp_model_params['metric']
-        model = H2OGeneralizedLinearEstimator(family=self.family)
+        model = H2OGeneralizedLinearEstimator()
+        params['family'] = self._problemType(self.problemType)
         # Setting model parameters in order to begin training
         model = update_model_parameters_GLM(model, params)
         # Training the model
