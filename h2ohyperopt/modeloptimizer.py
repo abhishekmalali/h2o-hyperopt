@@ -333,7 +333,6 @@ class ModelOptimizer():
 
     def score_ensemble(self, data):
         dataEn = self.create_ensembler_data(self.ensemble_model_list, data, train=True)
-        print dataEn
         testScore = gen_metric(self.ensemble_model.
                                model_performance(dataEn),
                                self.model_params['metric'])
