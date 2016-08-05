@@ -182,6 +182,7 @@ class ModelOptimizer():
         self.response = response
         self.predictors = predictors
         self.num_evals = num_evals
+        self.family = None
         best_model = fmin(self.objective_auto, space=self._hp_model_params,
                           algo=tpe.suggest, max_evals=num_evals,
                           trials=self.trials)

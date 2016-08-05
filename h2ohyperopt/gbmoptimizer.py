@@ -28,6 +28,7 @@ class GBMOptimizer(ModelOptimizer):
         self._hp_model_params = None
         self.trials = None
         self.best_model = None
+        self.family = None
 
     def objective_auto(self, params):
         """ Internal objective function for the GBMOptimizer class. """

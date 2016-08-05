@@ -27,6 +27,7 @@ class DLEOptimizer(ModelOptimizer):
         self._hp_model_params = None
         self.trials = None
         self.best_model = None
+        self.family = None
 
     def _gen_score(self, params, model, metric):
         """ Custom scoring function for the DLEOptimizer. """

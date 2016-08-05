@@ -27,6 +27,8 @@ class ModelDocker(ModelOptimizer):
             model_params = {}
             model_params['model'] = model.model
             model_params['params'] = model._hp_model_params
+            if model.family is not None:
+                model_params['params']['family'] = model.family
             docker_params.append(model_params)
 
         self.hp_docker_params = hp.choice('classifier', docker_params)
