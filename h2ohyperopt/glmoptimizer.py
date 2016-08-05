@@ -28,6 +28,7 @@ class GLMOptimizer(ModelOptimizer):
         self.trials = None
         self.best_model = None
         self.problemType = problemType
+        self.family = self._problemType(self.problemType)
 
     def _problemType(self, prString):
         """Internal function to determine the family type argument for GLM's"""
