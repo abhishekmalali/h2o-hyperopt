@@ -4,7 +4,7 @@ from setuptools import setup
 from setuptools import find_packages
 
 setup(name='h2ohyperopt',
-      version='0.1',
+      version='0.1.1',
       description='Library for Hyperopt based optimization in H2O Ecosystem',
       url='http://github.com/abhishekmalali/h2o-hyperopt/',
       author='Abhishek Malali',
