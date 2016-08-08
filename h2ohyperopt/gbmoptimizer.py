@@ -42,7 +42,7 @@ class GBMOptimizer(ModelOptimizer):
         model.train(x=self.predictors,
                     y=self.response,
                     training_frame=self.trainFr,
-                    early_stopping_rounds=5)
+                    early_stopping_rounds=10)
         score = self._gen_score(params, model, metric)
         return {'loss': score, 'status': STATUS_OK, 'model': model,
                 'params': params}
