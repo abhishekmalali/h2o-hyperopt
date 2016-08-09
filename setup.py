@@ -4,7 +4,7 @@ from setuptools import setup
 from setuptools import find_packages
 
 setup(name='h2ohyperopt',
-      version='0.1.1',
+      version='0.3',
       description='Library for Hyperopt based optimization in H2O Ecosystem',
       url='http://github.com/abhishekmalali/h2o-hyperopt/',
       author='Abhishek Malali',
@@ -12,4 +12,4 @@ setup(name='h2ohyperopt',
       license='MIT',
       include_package_data=True,
       packages=find_packages(),
-      install_requires=['numpy', 'scipy', 'nose', 'hyperopt', 'h2o'])
+      install_requires=['numpy', 'scipy', 'nose', 'hyperopt', 'h2o==3.8.3.3', 'networkx', 'pymongo==2.2'])
