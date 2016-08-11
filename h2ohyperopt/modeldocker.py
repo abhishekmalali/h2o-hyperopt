@@ -2,6 +2,7 @@ from util import *
 from dleoptimizer import *
 from gbmoptimizer import *
 from modeloptimizer import *
+import numpy as np
 
 
 class ModelDocker(ModelOptimizer):
@@ -195,5 +196,11 @@ class ModelDocker(ModelOptimizer):
         predFrameCor = self._build_corr_dataset()
         for model_idx in idxList:
             new_mod_id = predFrameCor['predict'+str(model_idx)].idxmin()
+            # Picking random model if all corr's are NaN
+            if np.isnan(new_mod_id):
+                selList = list(range(self.num_evals))
+                for selId in idxList:
+                    selList.remove(selId)
+                new_mod_id = np.random.choice(selList, 1)[0]
             modelList.append(self.trials.trials[new_mod_id]['result']['model'])
         self.create_ensembler_model(modelList)
