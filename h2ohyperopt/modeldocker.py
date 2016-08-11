@@ -160,3 +160,40 @@ class ModelDocker(ModelOptimizer):
                                model_performance(dataEn),
                                self.metric)
         return testScore
+
+    def _build_corr_dataset(self):
+        # Building the master H2OFrame which is to be used for Correlation
+        for i in range(len(self.trials.trials)):
+            val = self.trials.trials[i]['result']['model'].predict(self.trainFr)['predict']
+            val_name = 'predict'+str(i)
+            val.columns = [val_name]
+            if i == 0:
+                predFrame = val
+            else:
+                predFrame = predFrame.cbind(val)
+        predFrameCor = predFrame.cor(use='complete.obs')
+        return predFrameCor.as_data_frame()
+
+    def smart_ensembling(self):
+        # Picking one model and picking the next lowest correlated component
+        scores = []
+        model_type = []
+        for i in range(len(self.trials.trials)):
+            scores.append(self.trials.trials[i]['result']['loss'])
+            model_type.append(type(self.trials.trials[i]['result']['model']))
+        index = sorted(range(len(scores)), key=lambda k: scores[k])
+        modelTypeMasterList = set(model_type)
+        modelList = []
+        idxList = []
+        idx = 0
+        for modType in modelTypeMasterList:
+            while model_type[index[idx]] != modType:
+                idx += 1
+            modelList.append(self.trials.trials[index[idx]]['result']['model'])
+            idxList.append(index[idx])
+            idx = 0
+        predFrameCor = self._build_corr_dataset()
+        for model_idx in idxList:
+            new_mod_id = predFrameCor['predict'+str(model_idx)].idxmin()
+            modelList.append(self.trials.trials[new_mod_id]['result']['model'])
+        self.create_ensembler_model(modelList)
