@@ -219,7 +219,7 @@ div.output_prompt {
     
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="kn">import</span> <span class="nn">h2o</span>
@@ -236,40 +236,18 @@ div.output_prompt {
 
 
 <div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>
-
-No instance found at ip and port: localhost:54321. Trying to start local jar...
-
-
-JVM stdout: /var/folders/yf/_5_lv5n50rj5ftz_znrxstp80000gn/T/tmpwp7QJ5/h2o_abhishek_started_from_python.out
-JVM stderr: /var/folders/yf/_5_lv5n50rj5ftz_znrxstp80000gn/T/tmpBLHUDT/h2o_abhishek_started_from_python.err
-Using ice_root: /var/folders/yf/_5_lv5n50rj5ftz_znrxstp80000gn/T/tmp_MnExr
-
-
-Java Version: java version &quot;1.8.0_25&quot;
-Java(TM) SE Runtime Environment (build 1.8.0_25-b17)
-Java HotSpot(TM) 64-Bit Server VM (build 25.25-b02, mixed mode)
-
-
-Starting H2O JVM and connecting: ............................ Connection successful!
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
 
 <div class="output_html rendered_html output_subarea ">
 <div style="overflow:auto"><table style="width:50%"><tr><td>H2O cluster uptime: </td>
-<td>3 seconds 587 milliseconds </td></tr>
+<td>3 seconds 930 milliseconds </td></tr>
 <tr><td>H2O cluster version: </td>
 <td>3.8.3.3</td></tr>
 <tr><td>H2O cluster name: </td>
-<td>H2O_started_from_python_abhishek_rzy918</td></tr>
+<td>H2O_started_from_python_abhishek_cvz529</td></tr>
 <tr><td>H2O cluster total nodes: </td>
 <td>1</td></tr>
 <tr><td>H2O cluster total free memory: </td>
-<td>1.78 GB</td></tr>
+<td>1.76 GB</td></tr>
 <tr><td>H2O cluster total cores: </td>
 <td>4</td></tr>
 <tr><td>H2O cluster allowed cores: </td>
@@ -304,11 +282,11 @@ Starting H2O JVM and connecting: ............................ Connection success
 
 </div>
 </div>
-</div></section><section>
+</div><div class="fragment" data-fragment-index="2">
     
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="k">def</span> <span class="nf">data</span><span class="p">():</span>
@@ -350,11 +328,12 @@ Starting H2O JVM and connecting: ............................ Connection success
 </div>
 </div>
 
-</div></section><section>
+</div>
+    </div><div class="fragment" data-fragment-index="3">
     
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="n">trainFr</span><span class="p">,</span> <span class="n">testFr</span><span class="p">,</span> <span class="n">validFr</span><span class="p">,</span> <span class="n">predictors</span><span class="p">,</span> <span class="n">response</span> <span class="o">=</span> <span class="n">data</span><span class="p">()</span>
@@ -379,7 +358,8 @@ Parse Progress: [##################################################] 100%
 </div>
 </div>
 
-</div></section>
+</div>
+    </div></section>
     </section><section>
     <section>
     
@@ -414,7 +394,44 @@ Parse Progress: [##################################################] 100%
 </div>
 
 </div>
-    </div><div class="fragment" data-fragment-index="5">
+    </div><div class="fragment" data-fragment-index="6">
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="n">model_dle</span> <span class="o">=</span> <span class="n">h2ohyperopt</span><span class="o">.</span><span class="n">DLEOptimizer</span><span class="p">(</span><span class="n">metric</span><span class="o">=</span><span class="s">&#39;auc&#39;</span><span class="p">)</span>
+<span class="c"># Selecting parameters to optimize on</span>
+<span class="n">model_dle</span><span class="o">.</span><span class="n">select_optimization_parameters</span><span class="p">({</span><span class="s">&#39;epsilon&#39;</span><span class="p">:</span> <span class="s">&#39;Default&#39;</span><span class="p">,</span>
+                                          <span class="s">&#39;adaptive_rate&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>                                           
+                                          <span class="s">&#39;hidden&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s">&#39;choice&#39;</span><span class="p">,</span> <span class="p">[[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">],</span> <span class="p">[</span><span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">]]),</span>
+                                          <span class="s">&#39;nfolds&#39;</span><span class="p">:</span><span class="mi">7</span><span class="p">})</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+    </div><div class="fragment" data-fragment-index="7">
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="n">model_glm</span> <span class="o">=</span> <span class="n">h2ohyperopt</span><span class="o">.</span><span class="n">GLMOptimizer</span><span class="p">(</span><span class="n">metric</span><span class="o">=</span><span class="s">&#39;auc&#39;</span><span class="p">,</span> <span class="n">problemType</span><span class="o">=</span><span class="s">&#39;Classification&#39;</span><span class="p">)</span>
+<span class="c"># Selecting default parameters to optimize on</span>
+<span class="n">model_glm</span><span class="o">.</span><span class="n">select_optimization_parameters</span><span class="p">(</span><span class="s">&#39;Default&#39;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+    </div><div class="fragment" data-fragment-index="7">
         
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
