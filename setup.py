@@ -12,4 +12,4 @@ setup(name='h2ohyperopt',
       license='MIT',
       include_package_data=True,
       packages=find_packages(),
-      install_requires=['numpy', 'scipy', 'nose', 'hyperopt', 'h2o==3.8.3.3', 'networkx', 'pymongo==2.2'])
+      install_requires=['numpy', 'scipy', 'nose', 'hyperopt', 'h2o', 'networkx', 'pandas', 'pymongo==2.2'])
