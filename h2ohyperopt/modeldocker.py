@@ -78,6 +78,7 @@ class ModelDocker(ModelOptimizer):
         self.validFr = validationFr
         self.response = response
         self.predictors = predictors
+        self.num_evals = num_evals
         best_model = fmin(self.objective_auto, space=self.hp_docker_params,
                           algo=tpe.suggest, max_evals=num_evals,
                           trials=self.trials)
