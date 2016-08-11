@@ -7,5 +7,6 @@ from .util import *
 
 # Necessary imports
 import h2o
+import numpy as np
 from hyperopt import fmin, tpe, hp, STATUS_OK, Trials
 import hyperopt
