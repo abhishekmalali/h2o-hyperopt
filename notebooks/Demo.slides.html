@@ -239,11 +239,11 @@ div.output_prompt {
 
 <div class="output_html rendered_html output_subarea ">
 <div style="overflow:auto"><table style="width:50%"><tr><td>H2O cluster uptime: </td>
-<td>3 seconds 930 milliseconds </td></tr>
+<td>3 seconds 593 milliseconds </td></tr>
 <tr><td>H2O cluster version: </td>
 <td>3.8.3.3</td></tr>
 <tr><td>H2O cluster name: </td>
-<td>H2O_started_from_python_abhishek_cvz529</td></tr>
+<td>H2O_started_from_python_abhishek_zej259</td></tr>
 <tr><td>H2O cluster total nodes: </td>
 <td>1</td></tr>
 <tr><td>H2O cluster total free memory: </td>
@@ -302,11 +302,6 @@ div.output_prompt {
 <span class="sd">    response: String defining the response column for Training frame.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">titanic_df</span> <span class="o">=</span> <span class="n">h2o</span><span class="o">.</span><span class="n">import_file</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s">&quot;https://s3.amazonaws.com/h2o-public-test-data/smalldata/gbm_test/titanic.csv&quot;</span><span class="p">)</span>
-
-    <span class="c"># Basic preprocessing</span>
-    <span class="c"># columns_to_be_used - List of columns which are used in the training/test</span>
-    <span class="c"># data</span>
-    <span class="c"># columns_to_factorize - List of columns with categorical variables</span>
     <span class="n">columns_to_be_used</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;pclass&#39;</span><span class="p">,</span> <span class="s">&#39;age&#39;</span><span class="p">,</span> <span class="s">&#39;sex&#39;</span><span class="p">,</span> <span class="s">&#39;sibsp&#39;</span><span class="p">,</span> <span class="s">&#39;parch&#39;</span><span class="p">,</span> <span class="s">&#39;ticket&#39;</span><span class="p">,</span>
                           <span class="s">&#39;embarked&#39;</span><span class="p">,</span> <span class="s">&#39;fare&#39;</span><span class="p">,</span> <span class="s">&#39;survived&#39;</span><span class="p">]</span>
     <span class="n">columns_to_factorize</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;pclass&#39;</span><span class="p">,</span> <span class="s">&#39;sex&#39;</span><span class="p">,</span> <span class="s">&#39;sibsp&#39;</span><span class="p">,</span> <span class="s">&#39;embarked&#39;</span><span class="p">,</span> <span class="s">&#39;survived&#39;</span><span class="p">]</span>
@@ -376,7 +371,7 @@ Parse Progress: [##################################################] 100%
     
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="n">model_gbm</span> <span class="o">=</span> <span class="n">h2ohyperopt</span><span class="o">.</span><span class="n">GBMOptimizer</span><span class="p">(</span><span class="n">metric</span><span class="o">=</span><span class="s">&#39;auc&#39;</span><span class="p">)</span>
@@ -398,7 +393,7 @@ Parse Progress: [##################################################] 100%
     
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="n">model_dle</span> <span class="o">=</span> <span class="n">h2ohyperopt</span><span class="o">.</span><span class="n">DLEOptimizer</span><span class="p">(</span><span class="n">metric</span><span class="o">=</span><span class="s">&#39;auc&#39;</span><span class="p">)</span>
@@ -418,7 +413,7 @@ Parse Progress: [##################################################] 100%
     
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="n">model_glm</span> <span class="o">=</span> <span class="n">h2ohyperopt</span><span class="o">.</span><span class="n">GLMOptimizer</span><span class="p">(</span><span class="n">metric</span><span class="o">=</span><span class="s">&#39;auc&#39;</span><span class="p">,</span> <span class="n">problemType</span><span class="o">=</span><span class="s">&#39;Classification&#39;</span><span class="p">)</span>
@@ -431,14 +426,122 @@ Parse Progress: [##################################################] 100%
 </div>
 
 </div>
-    </div><div class="fragment" data-fragment-index="7">
-        
+    </div></section>
+    </section><section>
+    <section>
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Starting-the-Optimization">Starting the Optimization<a class="anchor-link" href="#Starting-the-Optimization">&#182;</a></h3>
+</div>
+</div>
+</div><div class="fragment" data-fragment-index="9">
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The optimization is started using the function <code>start_optimization</code>. It is necessary to provide a validation frame so that the optimization algorithm can evaluate the model.</p>
+
+</div>
+</div>
+</div>
+    </div><div class="fragment" data-fragment-index="10">
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre> 
+<div class=" highlight hl-ipython2"><pre><span class="n">docker</span> <span class="o">=</span> <span class="n">h2ohyperopt</span><span class="o">.</span><span class="n">ModelDocker</span><span class="p">([</span><span class="n">model_dle</span><span class="p">,</span> <span class="n">model_gbm</span><span class="p">,</span> <span class="n">model_glm</span><span class="p">],</span> <span class="s">&#39;auc&#39;</span><span class="p">)</span>                                     
+<span class="n">docker</span><span class="o">.</span><span class="n">start_optimization</span><span class="p">(</span><span class="n">num_evals</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">trainingFr</span><span class="o">=</span><span class="n">trainFr</span><span class="p">,</span>
+                          <span class="n">validationFr</span><span class="o">=</span><span class="n">validFr</span><span class="p">,</span> <span class="n">response</span><span class="o">=</span><span class="n">response</span><span class="p">,</span>                                              
+                          <span class="n">predictors</span><span class="o">=</span><span class="n">predictors</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+glm Model Build Progress: [##################################################] 100%
+
+glm Model Build Progress: [##################################################] 100%
+
+gbm Model Build Progress: [##################################################] 100%
+
+glm Model Build Progress: [##################################################] 100%
+
+gbm Model Build Progress: [##################################################] 100%
+
+glm Model Build Progress: [##################################################] 100%
+
+deeplearning Model Build Progress: [##################################################] 100%
+
+gbm Model Build Progress: [##################################################] 100%
+
+glm Model Build Progress: [##################################################] 100%
+
+gbm Model Build Progress: [##################################################] 100%
+
+gbm Model Build Progress: [##################################################] 100%
+
+glm Model Build Progress: [##################################################] 100%
+
+deeplearning Model Build Progress: [##################################################] 100%
+
+gbm Model Build Progress: [##################################################] 100%
+
+glm Model Build Progress: [##################################################] 100%
+
+glm Model Build Progress: [##################################################] 100%
+
+deeplearning Model Build Progress: [##################################################] 100%
+
+deeplearning Model Build Progress: [##################################################] 100%
+
+glm Model Build Progress: [##################################################] 100%
+
+gbm Model Build Progress: [##################################################] 100%
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    </div></section>
+    </section><section>
+    <section>
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Metrics-available-to-User">Metrics available to User<a class="anchor-link" href="#Metrics-available-to-User">&#182;</a></h3>
+</div>
+</div>
+</div><div class="fragment" data-fragment-index="12">
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="c">#To access the best model</span>
+<span class="n">bestmodel</span> <span class="o">=</span> <span class="n">docker</span><span class="o">.</span><span class="n">best_model</span>
 </pre></div>
 
 </div>
@@ -446,7 +549,192 @@ Parse Progress: [##################################################] 100%
 </div>
 
 </div>
+    </div><div class="fragment" data-fragment-index="13">
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="c"># To get the best model parameters</span>
+<span class="n">docker</span><span class="o">.</span><span class="n">best_model_parameters</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[10]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>(&apos;H2OGradientBoostingEstimator&apos;,
+ {&apos;col_sample_rate&apos;: 0.6327779065712638,
+  &apos;learn_rate&apos;: 0.06234001373627544,
+  &apos;metric&apos;: &apos;auc&apos;,
+  &apos;nfolds&apos;: 7,
+  &apos;ntrees&apos;: 200})</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    </div><div class="fragment" data-fragment-index="13">
+        
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="c"># To get the training and validation scores</span>
+<span class="n">docker</span><span class="o">.</span><span class="n">best_model_scores</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>The training loss metric(auc) is : 0.99451376414
+The validation loss metric(auc) is : 0.852054975552
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
         </div></section>
+    </section><section>
+    <section>
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Ensembling">Ensembling<a class="anchor-link" href="#Ensembling">&#182;</a></h3>
+</div>
+</div>
+</div><div class="fragment" data-fragment-index="16">
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Three ensemble methods provided for the user.<br \></p>
+<ol>
+<li>Use the best n models from evaluated models</li>
+<li>Use the best n models from each model class</li>
+<li>Smart ensembling using correlation</li>
+</ol>
+
+</div>
+</div>
+</div>
+    </div><div class="fragment" data-fragment-index="17">
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="o">%%</span><span class="k">capture</span>
+#To use smart ensembling
+docker.smart_ensembling()
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+    </div><div class="fragment" data-fragment-index="18">
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="n">testDockerScore</span> <span class="o">=</span> <span class="n">docker</span><span class="o">.</span><span class="n">score_ensemble</span><span class="p">(</span><span class="n">testFr</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+glm prediction Progress: [##################################################] 100%
+
+deeplearning prediction Progress: [##################################################] 100%
+
+gbm prediction Progress: [##################################################] 100%
+
+deeplearning prediction Progress: [##################################################] 100%
+
+gbm prediction Progress: [##################################################] 100%
+
+deeplearning prediction Progress: [##################################################] 100%
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    </div><div class="fragment" data-fragment-index="19">
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="n">testDockerScore</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[20]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>0.782051282051282</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    </div></section>
     </section>
 </div>
 </div>
