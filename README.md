@@ -21,7 +21,7 @@ python setup.py install
 
 ## Quick Start
 ### For a single model type
-Assuming you have data processed,
+The following steps assume you have a clean dataset with a binary response column split into train and validation frames (you will need to provide the following variables with data: TrainFr, ValidFr, predictors, response).
 ```{python}
 import h2ohyperopt
 model = h2ohyperopt.GBMOptimizer(metric='auc')
